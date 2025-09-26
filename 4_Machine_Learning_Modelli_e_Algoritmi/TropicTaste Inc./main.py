@@ -15,6 +15,7 @@ import numpy as np
 # Import dei moduli del progetto
 import data_io
 import train
+import eda
 
 
 # ==================================================================================
@@ -77,7 +78,20 @@ def run() -> Dict[str, Any]:
         print(f" Errore nel caricamento dataset: {e}")
         raise
     
-    # 2. Addestramento e valutazione
+    # 2. Analisi esplorativa (EDA)
+    print(f"\n Analisi esplorativa dei dati...")
+    try:
+        # Auto-rileva colonne numeriche (esclude target)
+        numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+        if TARGET_COL in numeric_cols:
+            numeric_cols.remove(TARGET_COL)
+        
+        eda.run_eda_analysis(df, TARGET_COL, numeric_cols)
+    except Exception as e:
+        print(f" Errore durante EDA: {e}")
+        print(" Continuo con l'addestramento...")
+    
+    # 3. Addestramento e valutazione
     print(f"\n Addestramento modello KNN...")
     print(f"   Target: {TARGET_COL}")
     print(f"   Tuning: {'Sì' if DO_TUNE else 'No'}")
@@ -85,6 +99,9 @@ def run() -> Dict[str, Any]:
     print(f"   Scoring: {SCORING}")
     
     try:
+        # Estrai nomi delle classi per la matrice di confusione
+        class_names = sorted(df[TARGET_COL].unique().tolist())
+        
         results = train.train_and_evaluate(
             df,
             target_col=TARGET_COL,
@@ -101,7 +118,7 @@ def run() -> Dict[str, Any]:
             n_jobs=-1,  # Usa tutti i core disponibili
             verbose=0,  # Silenzioso
             average=AVERAGE,
-            labels=None,  # Auto-rileva etichette
+            labels=class_names,  # Nomi delle classi per matrice di confusione
             digits=3,
             show_confusion=SHOW_CONFUSION,
             show_roc=SHOW_ROC
@@ -111,7 +128,7 @@ def run() -> Dict[str, Any]:
         print(f" Errore durante l'addestramento: {e}")
         raise
     
-    # 3. Stampa metriche chiave
+    # 4. Stampa metriche chiave
     print(f"\n RISULTATI PRINCIPALI")
     print("-" * 40)
 
@@ -167,7 +184,7 @@ def run() -> Dict[str, Any]:
     check_overfit("Accuracy", acc_diff)
     print("-" * 40)
     
-    # 4. Stampa migliori iperparametri (se tuning)
+    # 5. Stampa migliori iperparametri (se tuning)
     if DO_TUNE and results["cv_results"] is not None:
         print(f"\n MIGLIORI IPERPARAMETRI (Tuning)")
         print("-" * 40)
@@ -191,21 +208,12 @@ def run() -> Dict[str, Any]:
             else:
                 print(f"   {clean_param}: {value}")
         
-        # Score del miglior modello
-        cv_results = results["cv_results"]                 # Tutti i risultati della CV
-        mean_scores = cv_results["mean_test_score"]        # Punteggi medi di tutti i set di parametri
-        rank_scores = cv_results["rank_test_score"]        # Classifica dei set di parametri
-
-        # Trova l'indice del migliore (dove rank = 1)
-        best_index = int(np.where(rank_scores == 1)[0][0])
-
-        # Punteggio medio del migliore
-        best_score = mean_scores[best_index]
-
+        # Score del miglior modello (già calcolato sopra)
+        best_score = results["cv_results"]["mean_test_score"][best_index]
         print(f"   CV Score: {best_score:.3f}")
         print("-" * 40)
     
-    # 5. Salvataggio opzionale
+    # 6. Salvataggio opzionale
     if SAVE_ARTIFACTS:
         print(f"\n Salvataggio risultati...")
         try:
@@ -222,7 +230,7 @@ def run() -> Dict[str, Any]:
     else:
         print(f"\n Salvataggio disabilitato (SAVE_ARTIFACTS=False)")
     
-    # 6. Riepilogo finale
+    # 7. Riepilogo finale
     print(f"\n" + "=" * 60)
     print(" PROCEDIMENTO COMPLETATO")
     print("=" * 60)
@@ -256,7 +264,8 @@ if __name__ == "__main__":
         !python main.py
     
     Assicurarsi che tutti i moduli del progetto siano nella stessa cartella:
-        - data_io.py  
+        - data_io.py
+        - eda.py
         - preprocessing.py
         - model.py
         - metrics.py
