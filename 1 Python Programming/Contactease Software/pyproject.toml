@@ -1,0 +1,18 @@
+# pyproject.toml
+
+[project]
+# Informazioni base del progetto
+name = "contactease"
+description = "Una rubrica telefonica da riga di comando"
+author = "Guido Pacciani"
+readme = "README.md"
+
+# Versione minima di Python richiesta
+requires-python = ">=3.10"
+
+# Non servono librerie esterne per questo progetto
+
+[build-system]
+# Strumenti per creare il pacchetto
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
