@@ -404,6 +404,19 @@ Si consiglia l'uso di:
 - Validazione input con Pydantic
 - Limitazioni: testo max 1000 caratteri, batch max 100 testi, token max 512
 
+### Retraining
+
+Il modulo `src/utils/retrain.py` implementa una simulazione di retraining periodico del modello. Lo script simula il processo di retraining (caricamento dati, addestramento, validazione) con un intervallo configurabile.
+
+**Esecuzione**:
+```bash
+python src/utils/retrain.py
+```
+
+Per default, il retraining viene simulato ogni 60 secondi. Per modificare l'intervallo, modifica il parametro `interval_seconds` nella chiamata a `retrain_loop()`.
+
+In produzione, questo script può essere integrato con un orchestratore come Airflow per eseguire retraining programmati su nuovi dati.
+
 ### Notebook
 
 Il notebook `notebooks/exploration_and_report.ipynb` include:

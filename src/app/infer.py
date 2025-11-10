@@ -34,14 +34,25 @@ def get_pipeline():
     return _pipeline
 
 
+LABEL_MAP = {
+    "label_0": "negative",
+    "label_1": "neutral",
+    "label_2": "positive"
+}
+
+
 def _normalize_label(label: str) -> str:
     """Normalizza label del modello in formato standardizzato."""
     label_lower = label.lower()
-    if "negative" in label_lower or label_lower == "label_0":
+    
+    if label_lower in LABEL_MAP:
+        return LABEL_MAP[label_lower]
+    
+    if "negative" in label_lower:
         return "negative"
-    elif "neutral" in label_lower or label_lower == "label_1":
+    elif "neutral" in label_lower:
         return "neutral"
-    elif "positive" in label_lower or label_lower == "label_2":
+    elif "positive" in label_lower:
         return "positive"
     else:
         logger.warning(f"Label non riconosciuta: {label}, restituita così com'è")

@@ -66,3 +66,38 @@ def test_metrics_endpoint():
     assert "fastapi_requests_total" in content or len(content) > 0
 
 
+def test_prometheus_metrics_update():
+    """Test che verifica l'aggiornamento delle metriche Prometheus dopo una predizione."""
+    from src.app.metrics import SENTIMENT_DISTRIBUTION
+    
+    response1 = client.get("/metrics")
+    initial_content = response1.text
+    
+    response = client.post(
+        "/predict",
+        json={"text": "I love this product!"}
+    )
+    assert response.status_code == 200
+    
+    response2 = client.get("/metrics")
+    final_content = response2.text
+    
+    assert "sentiment_predictions_total" in final_content
+    
+    initial_count = initial_content.count('sentiment_predictions_total')
+    final_count = final_content.count('sentiment_predictions_total')
+    
+    assert final_count >= initial_count
+    
+    response3 = client.post(
+        "/predict",
+        json={"text": "This is terrible!"}
+    )
+    assert response3.status_code == 200
+    
+    response4 = client.get("/metrics")
+    final_content_after = response4.text
+    
+    assert "sentiment_predictions_total" in final_content_after
+
+

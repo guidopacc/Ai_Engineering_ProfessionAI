@@ -2,6 +2,7 @@
 Applicazione FastAPI principale per sentiment analysis.
 """
 import json
+import os
 import time
 import logging
 from fastapi import FastAPI, HTTPException
@@ -31,9 +32,20 @@ app = FastAPI(
     tags=["sentiment", "health", "metrics"]
 )
 
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+if DEBUG:
+    cors_origins = ["*"]
+else:
+    cors_origins = [
+        "http://localhost:8000",
+        "http://localhost:3000",
+        "http://127.0.0.1:8000",
+        "http://127.0.0.1:3000"
+    ]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
