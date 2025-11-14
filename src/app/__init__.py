@@ -1,3 +1,0 @@
-"""Sentiment reputation monitoring application."""
-
-
