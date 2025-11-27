@@ -37,3 +37,39 @@ progetto-contactease/
 │   └── menu.py             # Presentation Layer (Interfaccia Utente)
 └── utils/
     └── validators.py       # Helper functions (Logica di validazione pura)
+Questa struttura permette di cambiare, ad esempio, il metodo di salvataggio (da JSON a Database SQL) modificando solo il Repository, senza toccare il resto del programma.
+
+🚀 Come iniziare
+Prerequisiti
+
+Python 3.10 o superiore.
+
+Installazione ed Esecuzione
+
+Clona la repository:
+
+Bash
+git clone [https://github.com/TUO-USERNAME/ContactEase.git](https://github.com/TUO-USERNAME/ContactEase.git)
+cd ContactEase
+Avvia il programma:
+
+Bash
+python main.py
+🧪 Esempio di Utilizzo
+Plaintext
+=== CONTACTEASE ===
+1. Aggiungi contatto
+2. Modifica contatto
+3. Elimina contatto
+...
+Scelta: 1
+
+=== AGGIUNGI CONTATTO ===
+Nome: Guido
+Cognome: Pacciani
+Telefono: +39 333 1234567
+Email (opzionale): guido@example.com
+...
+Contatto aggiunto con successo!
+👨‍💻 Autore
+Sviluppato come progetto pratico per il modulo Python di ProfessionAI.      # Helper functions (Logica di validazione pura)
