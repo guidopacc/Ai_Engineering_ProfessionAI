@@ -1,32 +1,22 @@
 # VisionTech Solutions
-## Riconoscimento di animali per auto a guida autonoma
+## Riconoscimento di animali per sistemi di guida autonoma
 
 ---
 
 ## Descrizione
 
-**VisionTech Solutions** è un progetto di Deep Learning che implementa un sistema di riconoscimento automatico di immagini per distinguere tra **veicoli** e **animali**. Il sistema è stato progettato nel contesto delle auto a guida autonoma, dove l'identificazione rapida e precisa degli ostacoli sulla strada è fondamentale per garantire la sicurezza.
+VisionTech Solutions è un progetto di deep learning che implementa un classificatore binario per distinguere **animali** da **veicoli** nelle immagini. Il contesto applicativo è quello dei sistemi di guida autonoma, dove identificare rapidamente la categoria di un ostacolo è rilevante per la sicurezza.
 
-Il progetto utilizza una **Rete Neurale Convoluzionale (CNN)** addestrata sul dataset CIFAR-10, riorganizzato in una classificazione binaria:
+Il modello è una **Rete Neurale Convoluzionale (CNN)** addestrata sul dataset CIFAR-10, con le classi riorganizzate in due categorie:
 - **Animali**: bird, cat, deer, dog, frog, horse
 - **Veicoli**: airplane, automobile, ship, truck
 
 ---
 
-## Autore
+## Autore e contesto
 
-**Guido Pacciani**  
-Sviluppato per il **Master in AI Engineering** erogato da **ProfessionAI**
-
----
-
-## Obiettivi del progetto
-
-1. Implementare una CNN per classificazione binaria di immagini
-2. Applicare tecniche di preprocessing
-3. Utilizzare callback per ottimizzare l'addestramento (EarlyStopping)
-4. Valutare il modello con metriche complete (Accuracy, Precision, Recall, F1-Score)
-5. Analizzare qualitativamente le misclassificazioni
+**Autore:** Guido Pacciani  
+Sviluppato come progetto finale del modulo *"Deep Learning e Reti Neurali Artificiali"* del **Master Professionale in AI Engineering** erogato da [ProfessionAI](https://profession.ai/).
 
 ---
 
@@ -34,38 +24,77 @@ Sviluppato per il **Master in AI Engineering** erogato da **ProfessionAI**
 
 ```
 VisionTech Solutions/
-│
 ├── Riconoscimento_animali_auto_guida_autonoma.ipynb    # Notebook principale
-└── README.md                                           # Questo file
+└── README.md
 ```
 
 ### Contenuto del notebook
 
-Il notebook è suddiviso in sezioni logiche:
-
-1. **Import e Configurazione** - Setup dell'ambiente con seed riproducibile
-2. **Caricamento Dataset** - CIFAR-10 con visualizzazione campioni
-3. **Preprocessing** - Conversione binaria e normalizzazione
-4. **Architettura CNN** - Modello con 3 blocchi convoluzionali + batch normalization + dropout
-5. **Addestramento** - Training con EarlyStopping e validation split
-6. **Valutazione** - Metriche complete sul test set
-7. **Analisi Errori** - Visualizzazione misclassificazioni
+1. **Import e configurazione** — setup dell'ambiente, seed fisso per riproducibilità
+2. **Caricamento dataset** — CIFAR-10 con visualizzazione campioni
+3. **Preprocessing** — riorganizzazione in classi binarie e normalizzazione
+4. **Architettura CNN** — 3 blocchi convoluzionali con batch normalization e dropout
+5. **Addestramento** — training con EarlyStopping e validation split
+6. **Valutazione** — metriche complete sul test set
+7. **Analisi errori** — visualizzazione delle misclassificazioni
 
 ---
 
 ## Tecnologie utilizzate
 
-### Librerie Python
+- **TensorFlow/Keras** (2.x) — framework per deep learning
+- **NumPy** — operazioni numeriche e manipolazione array
+- **Matplotlib** — visualizzazione grafici e immagini
+- **Pandas** — manipolazione dati tabulari
 
-- **TensorFlow/Keras** (2.x) - Framework per Deep Learning
-- **NumPy** - Operazioni numeriche e manipolazione array
-- **Matplotlib** - Visualizzazione grafici e immagini
-- **Pandas** - Manipolazione dati tabulari
+---
 
-### Architettura del modello
+## Come eseguire
+
+### Opzione 1: Google Colab (consigliato)
+
+1. Apri [Google Colab](https://colab.research.google.com/)
+2. Carica il notebook `Riconoscimento_animali_auto_guida_autonoma.ipynb`
+3. Esegui tutte le celle in sequenza (Runtime → Run all)
+4. Il training richiede circa 5–10 minuti su GPU
+
+### Opzione 2: Ambiente locale
+
+**Requisiti:** Python 3.8+, GPU opzionale ma consigliata
+
+```bash
+cd "VisionTech Solutions"
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install tensorflow numpy matplotlib pandas jupyter
+jupyter notebook
+```
+
+Apri il notebook e esegui le celle in sequenza.
+
+---
+
+## Risultati attesi
+
+| Metrica   | Range atteso |
+|-----------|-------------|
+| Accuracy  | 88–92%      |
+| Precision | 88–93%      |
+| Recall    | 87–91%      |
+| F1-Score  | 88–92%      |
+
+*I valori possono variare in base al seed random e all'hardware.*
+
+Il notebook produce: grafici di training, matrice di confusione, esempi di misclassificazioni e predizioni corrette.
+
+---
+
+## Approfondimento tecnico
+
+### Architettura CNN
 
 ```
-Input (32x32x3)
+Input (32×32×3)
     ↓
 Conv2D(32) + BatchNorm + MaxPool
     ↓
@@ -79,124 +108,31 @@ Dense(128) + Dropout(0.4)
     ↓
 Dense(64) + Dropout(0.3)
     ↓
-Dense(1, sigmoid)
-    ↓
-Output (probabilità binaria)
+Dense(1, sigmoid)   → probabilità binaria
 ```
 
----
+### Scelte progettuali
 
-## Come eseguire il progetto
-
-### Opzione 1: Google Colab
-
-1. Apri [Google Colab](https://colab.research.google.com/)
-2. Carica il notebook `Riconoscimento_animali_auto_guida_autonoma.ipynb`
-3. Esegui le celle in sequenza (Runtime → Run all)
-4. Attendi il completamento del training (~5-10 minuti su GPU)
-
-### Opzione 2: Ambiente Locale
-
-#### Requisiti
-
-- Python 3.8+
-- GPU (opzionale, ma consigliata)
-
-#### Installazione
-
-```bash
-# Clona o scarica il repository
-cd "VisionTech Solutions"
-
-# Crea un ambiente virtuale (opzionale ma consigliato)
-python -m venv venv
-source venv/bin/activate  # Su Windows: venv\Scripts\activate
-
-# Installa le dipendenze
-pip install tensorflow numpy matplotlib pandas jupyter
-
-# Avvia Jupyter Notebook
-jupyter notebook
-```
-
-#### Esecuzione
-
-1. Apri il notebook `Riconoscimento_animali_auto_guida_autonoma.ipynb`
-2. Esegui le celle in sequenza
-3. I risultati verranno visualizzati inline
-
----
-
-## Risultati Attesi
-
-Il modello raggiunge performance nell'ordine di:
-
-- **Accuracy**: ~88-92%
-- **Precision**: ~88-93%
-- **Recall**: ~87-91%
-- **F1-Score**: ~88-92%
-
-*Nota: I risultati possono variare leggermente in base al seed random e all'hardware utilizzato.*
-
-### Esempi di Output
-
-Il notebook produce:
-- Visualizzazione di campioni dal dataset
-- Grafici di training (loss e accuracy)
-- Matrice di confusione
-- Esempi di misclassificazioni (False Positive e False Negative)
-- Esempi di predizioni corrette
-
----
-
-## Concetti di Deep Learning applicati
-
-Questo progetto implementa i seguenti concetti:
-
-### Reti Neurali Convoluzionali (CNN)
-- Layer convoluzionali per estrazione automatica di features
-- Pooling per riduzione dimensionalità
-- Filtri 3x3 con padding 'same'
-
-### Tecniche di ottimizzazione
-- **Optimizer**: Adam (learning_rate=0.001)
-- **Loss Function**: Binary Crossentropy
-- **Batch Size**: 64
-
-### Regolarizzazione
-- **Dropout** (40% e 30%) per prevenire overfitting
-- **Batch Normalization** per stabilizzare il training
-- **EarlyStopping** con patience=5
+- **Filtri 3×3 con padding `same`**: mantengono le dimensioni spaziali e catturano pattern locali
+- **Batch Normalization**: normalizza le attivazioni a ogni layer, stabilizzando e accelerando il training
+- **Dropout (40% e 30%)**: regolarizzazione per ridurre l'overfitting, disattivando casualmente neuroni durante il training
+- **EarlyStopping (patience=5)**: interrompe il training se la validation loss non migliora, evitando overfitting e riducendo i tempi
+- **Optimizer Adam (lr=0.001)** + **Binary Crossentropy**: standard per problemi di classificazione binaria
+- **Batch size 64**: bilanciamento tra stabilità del gradiente e velocità di aggiornamento
 
 ### Valutazione
-- Matrice di confusione (TP, TN, FP, FN)
-- Metriche: Accuracy, Precision, Recall, F1-Score
-- Analisi qualitativa degli errori
+
+Oltre all'accuracy, vengono calcolate precision, recall e F1-score — metriche più informative in presenza di classi sbilanciate. La matrice di confusione evidenzia i falsi positivi e falsi negativi per analizzare qualitativamente gli errori del modello.
 
 ---
 
 ## Riferimenti
 
-- **Dataset**: [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) - Canadian Institute For Advanced Research
+- **Dataset**: [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) — Canadian Institute For Advanced Research
 - **Framework**: [TensorFlow](https://www.tensorflow.org/) & [Keras](https://keras.io/)
-- **Corso**: Master in AI Engineering - [ProfessionAI](https://profession.ai/)
 
 ---
 
 ## Licenza
 
-Questo progetto **non ha una licenza** formale. È stato sviluppato esclusivamente per scopi didattici nell'ambito del Master in AI Engineering.
-
----
-
-## Contatti
-
-Per domande o suggerimenti sul progetto, contatta:
-
-**Guido Pacciani**  
-Studente Master AI Engineering - ProfessionAI
-
----
-
-**Sviluppato con ❤️ per il Master in AI Engineering - ProfessionAI**
-
+Rilasciato con licenza **MIT** — libero per uso personale, studio o sviluppo. Clona e modifica liberamente.
