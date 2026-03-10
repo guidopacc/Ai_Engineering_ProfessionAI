@@ -1,40 +1,63 @@
-# 📒 ContactEase
+# ContactEase
+## Gestore di contatti da terminale in Python
 
-> Un gestore di contatti CLI (Command Line Interface) robusto, sviluppato in Python con un'architettura modulare.
-
-![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Status](https://img.shields.io/badge/status-completed-brightgreen)
+---
 
 ## Descrizione
 
-ContactEase è un programma Python che permette di:
-* Aggiungere nuovi contatti con nome, cognome, telefono, email e note
-* Modificare contatti esistenti
-* Eliminare contatti
-* Cercare contatti per nome, cognome o telefono
-* Visualizzare tutti i contatti salvati
+ContactEase è un programma Python che gestisce una rubrica personale da riga di comando. Permette di aggiungere, modificare, eliminare e cercare contatti, con persistenza automatica su file JSON.
 
-I contatti vengono salvati automaticamente in un file JSON.
+Funzionalità principali:
+- Aggiungere nuovi contatti con nome, cognome, telefono, email e note
+- Modificare o eliminare contatti esistenti
+- Cercare contatti per nome, cognome o parte del numero di telefono
+- Visualizzare l'intera rubrica
 
-## Requisiti
+---
 
-* Python 3.10 o superiore
+## Autore e contesto
 
-## Come installare
+**Autore:** Guido Pacciani  
+Sviluppato come progetto finale del modulo *"Python Programming"* del **Master Professionale in AI Engineering** erogato da [ProfessionAI](https://profession.ai/).
 
-1. Scarica tutti i file del progetto
-2. Apri il terminale/prompt dei comandi nella cartella del progetto
+---
 
-## Come usare
+## Struttura del progetto
 
-Avvia il programma con:
+```
+Contactease Software/
+├── main.py                 # Punto di ingresso del programma
+├── pyproject.toml          # Configurazione del progetto
+├── contacts.json           # File dati (creato automaticamente al primo uso)
+├── cli/
+│   └── menu.py             # Gestione del menu e interazione utente
+├── models/
+│   └── contact.py          # Definizione della classe Contact
+├── repositories/
+│   └── contact_repo.py     # Caricamento e salvataggio contatti su JSON
+├── services/
+│   └── contact_service.py  # Logica di business e validazione input
+└── utils/
+    └── validators.py       # Validazione telefono ed email
+```
+
+---
+
+## Requisiti e installazione
+
+- Python 3.10 o superiore
+
+Nessuna dipendenza esterna. Scarica i file del progetto e avvia direttamente:
 
 ```bash
 python main.py
 ```
 
-Vedrai un menu con queste opzioni:
+---
+
+## Come usare
+
+All'avvio compare un menu testuale:
 
 ```
 === CONTACTEASE ===
@@ -50,92 +73,68 @@ Vedrai un menu con queste opzioni:
 
 1. Scegli l'opzione `1`
 2. Inserisci nome, cognome e telefono (obbligatori)
-3. Inserisci email e note (opzionali)
-4. Il contatto verrà salvato con un ID unico generato automaticamente
+3. Email e note sono opzionali
+4. Il contatto viene salvato con un ID generato automaticamente
 
 ### Modificare un contatto
 
-1. Scegli l'opzione `2`
-2. Vedrai la lista degli ID e nomi dei contatti
-3. Inserisci l'ID del contatto da modificare
-4. Inserisci i nuovi dati
+1. Scegli l'opzione `2`, poi seleziona l'ID del contatto da aggiornare e inserisci i nuovi valori
 
 ### Eliminare un contatto
 
-1. Scegli l'opzione `3`
-2. Inserisci l'ID del contatto da eliminare
-3. Conferma con `s` per procedere
+1. Scegli l'opzione `3`, inserisci l'ID e conferma con `s`
 
 ### Cercare contatti
 
-1. Scegli l'opzione `4`
-2. Inserisci il testo da cercare (può essere parte del nome, cognome o telefono)
-3. Vedrai tutti i contatti che corrispondono alla ricerca
-
-### Visualizzare tutti i contatti
-
-1. Scegli l'opzione `5`
-2. Vedrai la lista completa di tutti i contatti salvati
-
-## Formato dei dati
-
-### Telefono
-
-* Deve contenere almeno 8 cifre
-* Può iniziare con `+` (es. `+39123456789`)
-* Sono accettati spazi per la leggibilità (es. `123 456 7890`)
-
-### Email (opzionale)
-
-* Deve essere in formato valido (es. `nome@dominio.com`)
-* Può essere lasciata vuota
-
-### ID contatto
-
-Gli ID vengono generati automaticamente nel formato: `[Iniziale Nome][Iniziale Cognome][Ultime 4 cifre telefono]`
-
-Esempio: Guido Pacciani con telefono 1234567890 → ID: `GP7890`
-
-## Struttura del progetto
-
-```
-progetto-contactease/
-├── main.py                 # File principale per avviare il programma
-├── pyproject.toml          # Configurazione del progetto
-├── contacts.json           # File dove vengono salvati i contatti (creato automaticamente)
-├── cli/
-│   ├── __init__.py
-│   └── menu.py            # Gestione del menu e interazione utente
-├── models/
-│   ├── __init__.py
-│   └── contact.py         # Definizione della classe Contact
-├── repositories/
-│   ├── __init__.py
-│   └── contact_repo.py    # Gestione salvataggio/caricamento contatti
-├── services/
-│   ├── __init__.py
-│   └── contact_service.py # Logica di business e validazione
-└── utils/
-    ├── __init__.py
-    └── validators.py       # Funzioni per validare telefono ed email
-```
-
-## Dove vengono salvati i contatti
-
-I contatti vengono salvati nel file `contacts.json` nella stessa cartella del programma. Questo file viene creato automaticamente la prima volta che aggiungi un contatto.
-
-## Risoluzione problemi
-
-### Il programma non si avvia
-
-* Controlla di avere Python 3.10 o superiore: `python --version`
-* Assicurati di essere nella cartella giusta
-* Prova con `python3 main.py` se `python main.py` non funziona
-
-### I contatti non vengono salvati
-
-* Se il file `contacts.json` esiste, controlla che non sia corrotto
+1. Scegli l'opzione `4` e inserisci una stringa di ricerca (parte del nome, cognome o numero)
 
 ---
 
-Grazie per aver scaricato la mia soluzione di Contactease.
+## Formato dei dati e validazione
+
+### Telefono
+
+- Almeno 8 cifre numeriche
+- Può iniziare con `+` (es. `+39123456789`)
+- Spazi ammessi per leggibilità (es. `123 456 7890`)
+
+### Email (opzionale)
+
+- Formato standard `nome@dominio.com`
+
+### ID contatto
+
+Generato automaticamente nel formato `[Iniziale Nome][Iniziale Cognome][Ultime 4 cifre telefono]`.
+
+Esempio: Guido Pacciani, telefono 1234567890 → ID `GP7890`
+
+---
+
+## Approfondimento tecnico
+
+Il progetto è organizzato secondo un'architettura a strati ispirata al pattern **Repository**:
+
+- **`models/contact.py`**: definisce la struttura dati del contatto come classe Python
+- **`repositories/contact_repo.py`**: gestisce la persistenza (lettura/scrittura su JSON), separando il layer dati dalla logica applicativa
+- **`services/contact_service.py`**: contiene la logica di business — validazione, generazione ID, orchestrazione delle operazioni CRUD
+- **`cli/menu.py`**: interfaccia utente testuale, disaccoppiata dalla logica interna
+- **`utils/validators.py`**: funzioni pure di validazione con regex per telefono ed email
+
+Questa separazione permette di testare ogni strato indipendentemente dagli altri.
+
+---
+
+## Risoluzione problemi
+
+**Il programma non si avvia**
+- Verifica la versione Python: `python --version` (richiesta 3.10+)
+- Su alcuni sistemi usa `python3 main.py`
+
+**I contatti non vengono salvati**
+- Controlla che il file `contacts.json` non sia corrotto (deve contenere JSON valido)
+
+---
+
+## Licenza
+
+Rilasciato con licenza **MIT** — libero per uso personale, studio o sviluppo. Clona e modifica liberamente.

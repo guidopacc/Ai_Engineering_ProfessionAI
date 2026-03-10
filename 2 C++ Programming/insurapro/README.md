@@ -1,18 +1,24 @@
 # InsuraPro Solutions CRM
-
-InsuraPro Solutions CRM (Customer Relationship Management) è un sistema di gestione clienti da terminale, sviluppato in C++ per supportare le attività quotidiane delle imprese di assicurazioni.  
-Consente di tracciare interazioni, appuntamenti, contratti, email e telefonate in modo strutturato e persistente.
+## Sistema di gestione clienti da terminale in C++
 
 ---
 
 ## Descrizione
 
-InsuraPro Solutions CRM permette di:
+InsuraPro Solutions CRM è un sistema di gestione clienti (Customer Relationship Management) da terminale, sviluppato in C++ per le attività quotidiane di un'impresa assicurativa. Consente di tracciare clienti, interazioni, appuntamenti, contratti e comunicazioni in modo strutturato, con persistenza automatica su file di testo.
 
+Funzionalità principali:
 - Aggiungere, modificare, eliminare e cercare clienti
-- Gestire appuntamenti, contratti, telefonate, email e altre interazioni (ogni interazione è tracciata con data, tipo e note)
-- Salvare e caricare i dati automaticamente in file di testo
-- Gestire errori in modo centralizzato tramite un modulo dedicato
+- Registrare interazioni di diverso tipo: appuntamenti, contratti, telefonate, email
+- Ogni interazione viene tracciata con data, tipo e note descrittive
+- Salvataggio e caricamento automatici dei dati da file
+
+---
+
+## Autore e contesto
+
+**Autore:** Guido Pacciani  
+Sviluppato come progetto finale del modulo *"Programmazione avanzata in C++"* del **Master Professionale in AI Engineering** erogato da [ProfessionAI](https://profession.ai/).
 
 ---
 
@@ -20,41 +26,32 @@ InsuraPro Solutions CRM permette di:
 
 ```
 insurapro/
-│
-├── src/                     # File sorgente principali (.cpp)
-│   ├── main.cpp             # File principale con menu e logica generale
+├── src/                     # File sorgente (.cpp)
+│   ├── main.cpp             # Menu principale e logica di flusso
 │   ├── crm.cpp              # Implementazione della classe CRM
 │   ├── cliente.cpp          # Implementazione della classe Cliente
 │   └── interazione.cpp      # Implementazione della classe Interazione
-│
 ├── include/                 # File header (.h)
-│   ├── crm.h                # Definizione della classe CRM
-│   ├── cliente.h            # Definizione della classe Cliente
-│   └── interazione.h        # Definizione della classe Interazione
-│
+│   ├── crm.h
+│   ├── cliente.h
+│   └── interazione.h
 ├── errors/                  # Modulo gestione errori
-│   ├── gestione_errori.cpp  # Funzioni di gestione errori
-│   └── gestione_errori.h    # Header gestione errori
-│
-├── build/                   # File oggetto ed eseguibili (cartella generata dalla compilazione)
-│   ├── insurapro_crm        # Eseguibile principale (Linux/macOS)
-│   └── *.o                  # File oggetto
-│
-├── data/                    # File dati (cartella generata dalla compilazione)
-│   ├── clienti.txt          # Dati anagrafici clienti
-│   └── interazioni.txt      # Storico interazioni
-│
-├── README.md                # Documentazione del progetto
-│
-├── Makefile                 # File per la compilazione automatica
+│   ├── gestione_errori.cpp
+│   └── gestione_errori.h
+├── build/                   # File oggetto ed eseguibile (generato dalla compilazione)
+├── data/                    # File dati persistenti (generato dalla compilazione)
+│   ├── clienti.txt
+│   └── interazioni.txt
+├── Makefile
+└── README.md
 ```
 
 ---
 
 ## Requisiti
 
-- Compilatore C++ con supporto a C++11 (g++, clang++, Visual Studio)
-- Sistema operativo: **Windows**, **macOS**, **Linux**
+- Compilatore C++ con supporto C++11 (`g++`, `clang++`, Visual Studio)
+- Sistema operativo: Windows, macOS, Linux
 - Permessi di scrittura nelle cartelle `build/` e `data/`
 
 ---
@@ -63,38 +60,20 @@ insurapro/
 
 ### macOS e Linux
 
-1. Verifica la presenza di `g++` con:
-   ```bash
-   g++ --version
-   ```
-2. Se assente, installalo con:
-   - **macOS**:
-     ```bash
-     brew install gcc
-     ```
-   - **Linux (Ubuntu/Debian)**:
-     ```bash
-     sudo apt update
-     sudo apt install build-essential
-     ```
+Verifica la presenza di `g++`:
+```bash
+g++ --version
+```
 
----
+Se assente, installalo:
+- **macOS**: `brew install gcc`
+- **Linux (Ubuntu/Debian)**: `sudo apt update && sudo apt install build-essential`
 
 ### Windows (con MSYS2)
 
-1. Premi `Win + R`, digita `cmd` e premi Invio  
-2. Installa MSYS2 con winget:
-   ```bash
-   winget install -e --id MSYS2.MSYS2
-   ```
-3. Apri il terminale "MSYS2 MSYS" e aggiorna i pacchetti:
-   ```bash
-   pacman -Syu
-   ```
-4. Chiudi e riapri il terminale, poi installa il compilatore:
-   ```bash
-   pacman -S mingw-w64-x86_64-gcc
-   ```
+1. Installa MSYS2: `winget install -e --id MSYS2.MSYS2`
+2. Dal terminale MSYS2 aggiorna i pacchetti: `pacman -Syu`
+3. Installa il compilatore: `pacman -S mingw-w64-x86_64-gcc`
 
 ---
 
@@ -102,68 +81,52 @@ insurapro/
 
 ### macOS / Linux
 
-1. Apri il terminale nella cartella del progetto:
-   ```bash
-   cd insurapro/
-   ```
+```bash
+cd insurapro/
+make
+./build/insurapro_crm
+```
 
-2. Compila con Makefile:
-   ```bash
-   make
-   ```
+Per pulire i file generati:
+```bash
+make clean
+```
 
-3. Esegui:
-   ```bash
-   ./build/insurapro_crm
-   ```
+### Windows — MinGW-w64
 
-4. Pulisci i file generati:
-   ```bash
-   make clean
-   ```
+```bash
+g++ -Iinclude -Ierrors -o build/insurapro_crm.exe src/*.cpp errors/*.cpp
+build/insurapro_crm.exe
+```
 
----
+### Windows — Visual Studio
 
-### Windows – Opzione 1: MinGW-w64 + Prompt dei comandi
-
-1. Apri il prompt dei comandi nella cartella `insurapro/`
-
-2. Compila:
-   ```bash
-   g++ -Iinclude -Ierrors -o build/insurapro_crm.exe src/*.cpp errors/*.cpp
-   ```
-
-3. Esegui:
-   ```bash
-   build/insurapro_crm.exe
-   ```
-
-4. Se serve, crea manualmente la cartella:
-   ```bash
-   mkdir build
-   ```
+1. Crea un progetto C++ Console Application
+2. Aggiungi i file dalle cartelle `src/`, `include/` ed `errors/`
+3. Imposta `include/` ed `errors/` come directory di inclusione
+4. Compila ed esegui
 
 ---
 
-### Windows – Opzione 2: Visual Studio
+## Approfondimento tecnico
 
-1. Crea un nuovo progetto C++ Console Application  
-2. Aggiungi i file delle cartelle `src/`, `include/` ed `errors/`  
-3. Imposta `include/` ed `errors/` come directory di inclusione  
-4. Compila ed esegui direttamente da Visual Studio
+Il progetto utilizza un design orientato agli oggetti con tre classi principali:
+
+- **`Cliente`**: anagrafica del cliente (nome, cognome, dati di contatto, ID univoco)
+- **`Interazione`**: singola interazione tracciata, con tipo enumerato (appuntamento, contratto, telefonata, email), data e note testuali
+- **`CRM`**: classe aggregatrice che gestisce una collezione di clienti con le relative interazioni, espone le operazioni CRUD e coordina la persistenza
+
+La gestione degli errori è centralizzata nel modulo `errors/gestione_errori`, separata dalla logica applicativa. I dati vengono serializzati come file di testo strutturato in `data/`, con caricamento automatico all'avvio del programma. Il `Makefile` gestisce la compilazione incrementale tramite file oggetto `.o`.
 
 ---
 
 ## Note
 
-- I dati vengono salvati in `data/` come `.txt`
-- Le cartelle `data/` e `build/` vengono create se mancanti
+- Le cartelle `data/` e `build/` vengono create automaticamente se mancanti
 - Assicurati di avere i permessi di scrittura in entrambe
 
 ---
 
 ## Licenza
 
-**Autore:** Guido Pacciani  
-**Il progetto è open source**, sviluppato per il corso _"Programmazione avanzata in C++"_ del **Master professionalizzante in AI Engineering** erogato da ProfessionAI.  
-**Data di realizzazione:** Luglio 2025
+Rilasciato con licenza **MIT** — libero per uso personale, studio o sviluppo. Clona e modifica liberamente.
