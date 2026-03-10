@@ -21,7 +21,7 @@ Sviluppato come progetto finale del modulo *"Computer Vision"* del **Master Prof
 ## Struttura del progetto
 
 ```
-8 Computer Vision/final project/
+8_Computer_Vision/GreenTech Solutions/
 ├── GreenTech Solutions.ipynb    # Notebook principale
 └── README.md
 ```
