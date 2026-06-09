@@ -1,0 +1,13 @@
+torch>=2.1
+torchvision>=0.16
+transformers>=4.40
+diffusers>=0.27
+accelerate>=0.28
+sentencepiece
+Pillow
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+tqdm
