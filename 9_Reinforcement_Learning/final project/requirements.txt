@@ -1,0 +1,5 @@
+gym-idsgame==1.0.12
+gymnasium==0.28.1
+numpy>=1.23
+torch>=2.0
+matplotlib>=3.7
